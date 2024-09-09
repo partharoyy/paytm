@@ -94,3 +94,36 @@ export const signinUser = async (req, res) => {
     });
   }
 };
+
+export const updateUser = async (req, res) => {
+  const { firstName, lastName, password } = req.body;
+
+  try {
+    if (password && password.length < 8) {
+      return res.json({
+        success: false,
+        message: "Password cannot be less than 8 characters",
+      });
+    }
+
+    const updatedUserData = { firstName, lastName };
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updatedUserData.password = await bcrypt.hash(password, salt);
+    }
+
+    await userModel.findByIdAndUpdate(req.body.userId, updatedUserData, { new: true });
+
+    res.json({
+      success: true,
+      message: "Details updated",
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "Error",
+    });
+  }
+};
