@@ -127,3 +127,29 @@ export const updateUser = async (req, res) => {
     });
   }
 };
+
+export const searchedUsers = async (req, res) => {
+  const { queryUser } = req.body;
+
+  try {
+    const users = await userModel.find({
+      $or: [{ firstName: { $regex: queryUser, $options: "i" } }, { lastName: { $regex: queryUser, $options: "i" } }],
+    });
+
+    res.json({
+      success: true,
+      users: users.map((user) => ({
+        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        _id: user._id,
+      })),
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "Error",
+    });
+  }
+};
