@@ -124,7 +124,7 @@ export const updateUser = async (req, res) => {
       updatedUserData.password = await bcrypt.hash(password, salt);
     }
 
-    await userModel.findByIdAndUpdate(req.body.userId, updatedUserData, { new: true });
+    await userModel.findByIdAndUpdate(req.userId, updatedUserData, { new: true });
 
     res.json({
       success: true,
@@ -140,11 +140,11 @@ export const updateUser = async (req, res) => {
 };
 
 export const searchedUsers = async (req, res) => {
-  const { queryUser } = req.body || "";
+  const filter = req.query.filter || "";
 
   try {
     const users = await userModel.find({
-      $or: [{ firstName: { $regex: queryUser, $options: "i" } }, { lastName: { $regex: queryUser, $options: "i" } }],
+      $or: [{ firstName: { $regex: filter, $options: "i" } }, { lastName: { $regex: filter, $options: "i" } }],
     });
 
     res.json({

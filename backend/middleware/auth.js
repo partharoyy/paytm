@@ -1,18 +1,20 @@
 import jwt from "jsonwebtoken";
 
 const authMiddleware = async (req, res, next) => {
-  const { token } = req.headers;
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.json({
       success: false,
       message: "Unauthorised user",
     });
   }
 
+  const token = authHeader.split(" ")[1];
+
   try {
     const decode_token = jwt.verify(token, process.env.JWT_SECRET);
-    req.body.userId = decode_token.id;
+    req.userId = decode_token.id;
     next();
   } catch (error) {
     console.log(error);

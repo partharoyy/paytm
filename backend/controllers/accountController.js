@@ -3,7 +3,7 @@ import accountModel from "../models/accountModel.js";
 
 export const getBalance = async (req, res) => {
   try {
-    const account = await accountModel.findOne({ userId: req.body.userId });
+    const account = await accountModel.findOne({ userId: req.userId });
 
     if (!account) {
       return res.json({
@@ -32,7 +32,7 @@ export const transferAmount = async (req, res) => {
   // start transaction
   session.startTransaction();
   const { amount, to } = req.body;
-  const userId = req.body.userId;
+  const userId = req.userId;
 
   // fetch from account
   const fromAccount = await accountModel.findOne({ userId }).session(session);
