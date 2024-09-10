@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import validator from "validator";
 import jwt from "jsonwebtoken";
+import accountModel from "../models/accountModel.js";
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
@@ -45,6 +46,16 @@ export const signupUser = async (req, res) => {
     });
 
     const user = await newUser.save();
+
+    // add funds to a user account
+    const userId = user._id;
+    const addBalance = new accountModel({
+      userId,
+      balance: 1 + Math.random() * 10000,
+    });
+
+    await addBalance.save();
+
     const token = createToken(user._id);
     res.json({
       success: true,
@@ -129,7 +140,7 @@ export const updateUser = async (req, res) => {
 };
 
 export const searchedUsers = async (req, res) => {
-  const { queryUser } = req.body;
+  const { queryUser } = req.body || "";
 
   try {
     const users = await userModel.find({
