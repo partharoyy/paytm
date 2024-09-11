@@ -4,6 +4,8 @@ import "dotenv/config";
 import cors from "cors";
 import userRouter from "./routes/userRouter.js";
 import accountRouter from "./routes/accountRoute.js";
+import authMiddleware from "./middleware/auth.js";
+import { checkMe } from "./controllers/meController.js";
 
 // app config
 const app = express();
@@ -20,6 +22,7 @@ app.use("/api/user", userRouter);
 app.use("/api/account", accountRouter);
 
 app.get("/", (req, res) => res.send("API working"));
+app.get("/me", authMiddleware, checkMe);
 
 // listen to server
 app.listen(process.env.PORT, () => {

@@ -4,24 +4,31 @@ const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.json({
+    return res.status(401).json({
       success: false,
-      message: "Unauthorised user",
+      message: "Unauthorized user. No token provided.",
     });
   }
 
   const token = authHeader.split(" ")[1];
 
   try {
-    const decode_token = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decode_token.id;
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decodedToken.id;
     next();
   } catch (error) {
-    console.log(error);
-    res.json({
-      success: false,
-      message: "Error",
-    });
+    console.error("JWT Verification Error:", error);
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        success: false,
+        message: "Token has expired. Please login again.",
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid token.",
+      });
+    }
   }
 };
 

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BottomWarning from "../components/BottomWarning";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import InputBox from "../components/InputBox";
 import SubHeading from "../components/SubHeading";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -13,6 +14,8 @@ const Signup = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +34,7 @@ const Signup = () => {
 
       if (response.data.success) {
         localStorage.setItem("token", response.data.token);
-        alert("Sign up successful!");
+        navigate("/dashboard");
       } else {
         alert(response.data.message || "Sign up failed. Please try again.");
       }
