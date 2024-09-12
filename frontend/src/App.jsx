@@ -4,10 +4,12 @@ import Signin from "./pages/Signin";
 import Dashboard from "./pages/Dashboard";
 import SendMoney from "./pages/SendMoney";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import Appbar from "./components/Appbar";
 
 function App() {
   return (
     <BrowserRouter>
+      <Appbar />
       <Routes>
         <Route path='/signup' element={<Signup />} />
         <Route path='/signin' element={<Signin />} />

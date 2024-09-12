@@ -52,47 +52,68 @@ const Signup = () => {
   };
 
   return (
-    <div className='bg-slate-300 h-screen flex justify-center'>
-      <div className='flex flex-col justify-center'>
-        <form className='rounded-lg bg-white w-80 text-center p-2 h-max px-4' onSubmit={handleSignUp}>
+    <div className='bg-green-50 min-h-screen flex items-center justify-center'>
+      <div className='animate-fadeIn bg-white shadow-lg rounded-lg p-8 md:w-96 w-full'>
+        <form onSubmit={handleSignUp} className='text-center'>
+          {/* Heading */}
           <Heading label={"Sign up"} />
-          <SubHeading label={"Enter your infromation to create an account"} />
+          <SubHeading label={"Enter your information to create an account"} />
+
+          {/* First Name Input */}
           <InputBox
             placeholder='John'
             label={"First Name"}
             name='firstName'
             value={data.firstName}
             onChange={handleOnChange}
-            type={"text"}
+            type='text'
+            className='my-4 border border-green-200 focus:ring-2 focus:ring-green-500 transition-all'
           />
+
+          {/* Last Name Input */}
           <InputBox
             placeholder='Doe'
             label={"Last Name"}
             name='lastName'
             value={data.lastName}
             onChange={handleOnChange}
-            type={"text"}
+            type='text'
+            className='my-4 border border-green-200 focus:ring-2 focus:ring-green-500 transition-all'
           />
+
+          {/* Email Input */}
           <InputBox
             placeholder='johndoe@gmail.com'
             label={"Email"}
             name='email'
             value={data.email}
             onChange={handleOnChange}
-            type={"email"}
+            type='email'
+            className='my-4 border border-green-200 focus:ring-2 focus:ring-green-500 transition-all'
           />
+
+          {/* Password Input */}
           <InputBox
-            placeholder='123456'
+            placeholder='********'
             label={"Password"}
             name='password'
             value={data.password}
             onChange={handleOnChange}
-            type={"password"}
+            type='password'
+            className='my-4 border border-green-200 focus:ring-2 focus:ring-green-500 transition-all'
           />
-          <div className='pt-4'>
-            <Button label={"Sign up"} type={"submit"} />
+
+          {/* Sign Up Button */}
+          <div className='pt-6'>
+            <Button
+              label={"Sign up"}
+              type='submit'
+              className='bg-green-600 hover:bg-green-500 text-white py-3 px-6 rounded-md font-semibold transition duration-300 transform hover:scale-105'
+            />
           </div>
-          <BottomWarning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} />
+
+          {/* Bottom Warning */}
+          <BottomWarning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} className='mt-6' />
         </form>
       </div>
     </div>
